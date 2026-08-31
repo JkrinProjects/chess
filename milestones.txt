@@ -1,0 +1,29 @@
+create board (8/31)
+move a piece (8/31)
+map names of spaces to (a1, g3) to board coordinates (8/31)
+define piece specific movement
+
+reject illegal moves and moves outside the board
+reject movement through other pieces
+
+add turns
+prevent moving opponent pieces
+
+detect check
+prevent moving into check
+
+detect checkmate & stalemate
+
+define special behavior
+    a. Pawn promotion
+    b. castling
+    c. en passant
+
+create ui
+add move logging/history
+create restart game function
+
+future additions
+    a. add model to calculate the best n moves
+    b. add computer opponent
+    c. adjust cpu opponent skill level
