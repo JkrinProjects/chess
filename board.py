@@ -1,4 +1,4 @@
-
+from pieces import Piece, Pawn
 
 class Board:
 
@@ -6,7 +6,7 @@ class Board:
     def __init__(self):
         self.grid =  [
         ["r","h","b","q","k","b","h","r"],
-        ["p","p","p","p","p","p","p","p"],
+        [Pawn("black"),Pawn("black"),Pawn("black"),Pawn("black"),Pawn("black"),Pawn("black"),Pawn("black"),Pawn("black")],
         [".",".",".",".",".",".",".","."],
         [".",".",".",".",".",".",".","."],
         [".",".",".",".",".",".",".","."],
@@ -19,5 +19,5 @@ class Board:
         print(" ")
         print(" ".join(["a","b","c","d","e","f","g","h"]))
         for row in self.grid:
-            print(" ".join(row))
+            print(" ".join(str(piece) for piece in row))
         print(" ")

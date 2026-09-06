@@ -1,5 +1,7 @@
 BOARD_LENGTH = 8
 
+from pieces import Piece, Pawn
+
 
 def move(board):
     prev_square = board.grid[1][0]
@@ -38,18 +40,17 @@ def convert_chess_square_to_grid(square):
 
 def move(board, starting_square_name, ending_square_name):
 
-    #create a list of the square name to parse the col/row
-    #starting_board_square = list(starting_square_name)
-    #ending_board_square = list(ending_square_name)
-
     #map the square name to the table position
     starting_row, starting_col = convert_chess_square_to_grid(starting_square_name)
     ending_row, ending_col = convert_chess_square_to_grid(ending_square_name)
     
     
     #get the piece at the grid location
-    start_square_piece = board.grid[starting_row][starting_col] #the piece in this positin
-    end_square_piece = board.grid[ending_row][ending_col] #should be empty, can use its emptiness to verify valid move
+    start_square_piece: Piece = board.grid[starting_row][starting_col] #the piece in this positin
+    end_square_piece: Piece = board.grid[ending_row][ending_col] #should be empty or a capturable piece, can use its emptiness to verify valid move
+
+    #check if the movement is valid
+    if start_square_piece.is_valid_piece_movement()
 
 
     #Move the piece

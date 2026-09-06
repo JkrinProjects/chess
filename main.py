@@ -7,6 +7,7 @@ def main():
 
     game_board = Board()
     game_board.print_board()
+    
 
     while True:
         start_position = input("Starting Position: ")
