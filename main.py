@@ -8,9 +8,13 @@ def main():
     game_board = Board()
     game_board.print_board()
     
-
-    while True:
+    game_on = True
+    while game_on == True:
         start_position = input("Starting Position: ")
+        if start_position == "quit":
+            game_on == False
+            break
+                
         end_position = input("Ending Position: ")
         move(game_board, start_position, end_position)
         game_board.print_board()
