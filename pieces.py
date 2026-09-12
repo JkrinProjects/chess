@@ -60,13 +60,20 @@ class Knight(Piece):
     pass
 
 class Bishop(Piece):
-    pass
+
+    def is_valid_piece_movement(self, row_difference, column_difference):
+        if(abs(row_difference)==abs(column_difference)):
+            return True
+    
 
 class Queen(Piece):
+    
     def is_valid_piece_movement(self, row_difference, column_difference):
         if (row_difference == 0 and column_difference != 0):
             return True
         if (row_difference != 0 and column_difference == 0):
+            return True
+        if(abs(row_difference)==abs(column_difference)):
             return True
 
     
