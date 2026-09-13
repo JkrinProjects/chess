@@ -57,11 +57,20 @@ class Rook(Piece):
 
 
 class Knight(Piece):
+
+    def is_valid_piece_movement(self, row_difference, column_difference):
+            if (abs(row_difference) == 2 and abs(column_difference) == 1):
+                return True
+            if (abs(row_difference) == 1 and abs(column_difference) == 2):
+                return True
     pass
 
 class Bishop(Piece):
 
     def is_valid_piece_movement(self, row_difference, column_difference):
+        if(row_difference == 0 or column_difference -- 0):
+            return False
+
         if(abs(row_difference)==abs(column_difference)):
             return True
     
@@ -73,7 +82,7 @@ class Queen(Piece):
             return True
         if (row_difference != 0 and column_difference == 0):
             return True
-        if(abs(row_difference)==abs(column_difference)):
+        if(abs(row_difference) == abs(column_difference)):
             return True
 
     
