@@ -68,7 +68,7 @@ class Knight(Piece):
 class Bishop(Piece):
 
     def is_valid_piece_movement(self, row_difference, column_difference):
-        if(row_difference == 0 or column_difference -- 0):
+        if(row_difference == 0 or column_difference == 0):
             return False
 
         if(abs(row_difference)==abs(column_difference)):
