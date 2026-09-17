@@ -16,8 +16,12 @@ def main():
             break
                 
         end_position = input("Ending Position: ")
-        move(game_board, start_position, end_position)
-        game_board.print_board()
+        if move(game_board, start_position, end_position):
+            game_board.print_board()
+        else:
+            print("Invalid Move")
+        
+
 
     
 if __name__ == "__main__":
