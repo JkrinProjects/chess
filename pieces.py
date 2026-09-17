@@ -96,6 +96,8 @@ class Bishop(Piece):
 
         if(abs(row_difference)==abs(column_difference)):
             return True
+
+        return False
     
 
 class Queen(Piece):
@@ -115,6 +117,7 @@ class Queen(Piece):
         if(abs(row_difference) == abs(column_difference)):
             return True
 
+        return False
     
 
 class King(Piece):
@@ -127,8 +130,10 @@ class King(Piece):
             self.letter ="K"   
 
     def is_valid_piece_movement(self, row_difference, column_difference):
-        if abs((row_difference <=1 ) and abs(column_difference <=1)):
+        if abs((row_difference <=1 ) and abs(column_difference <=1) and #movement is not larger than 1 space
+               (row_difference !=0 or column_difference !=0)): #movement is not zero spaces
             return True
+        return False
 
     
 
