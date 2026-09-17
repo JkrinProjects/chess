@@ -8,7 +8,7 @@ class Piece(ABC):
 
     #print function
     def __str__(self):
-        return f"{self.color}: {self.letter}"
+        return f"{self.letter}"
     
     @abstractmethod
     def is_valid_piece_movement(self, row_difference, column_difference):
@@ -18,7 +18,10 @@ class Pawn(Piece):
 
     def __init__(self, color):
         super().__init__(color)
-        self.letter = "P"
+        if self.color == "black":
+            self.letter ="p"
+        if self.color == "white":
+            self.letter ="P"
 
     def is_valid_piece_movement(self, row_difference, column_difference):
 
@@ -47,6 +50,12 @@ class Pawn(Piece):
     
 
 class Rook(Piece):
+    def __init__(self, color):
+        super().__init__(color)
+        if self.color == "black":
+            self.letter ="r"
+        if self.color == "white":
+            self.letter ="R"    
      
     def is_valid_piece_movement(self, row_difference, column_difference):
         if (row_difference == 0 and column_difference != 0):
@@ -58,14 +67,28 @@ class Rook(Piece):
 
 class Knight(Piece):
 
+    def __init__(self, color):
+        super().__init__(color)
+        if self.color == "black":
+            self.letter ="h"
+        if self.color == "white":
+            self.letter ="H"   
+
     def is_valid_piece_movement(self, row_difference, column_difference):
             if (abs(row_difference) == 2 and abs(column_difference) == 1):
                 return True
             if (abs(row_difference) == 1 and abs(column_difference) == 2):
                 return True
-    pass
+            return False
 
 class Bishop(Piece):
+
+    def __init__(self, color):
+        super().__init__(color)
+        if self.color == "black":
+            self.letter ="b"
+        if self.color == "white":
+            self.letter ="B"   
 
     def is_valid_piece_movement(self, row_difference, column_difference):
         if(row_difference == 0 or column_difference == 0):
@@ -76,6 +99,13 @@ class Bishop(Piece):
     
 
 class Queen(Piece):
+
+    def __init__(self, color):
+        super().__init__(color)
+        if self.color == "black":
+            self.letter ="q"
+        if self.color == "white":
+            self.letter ="Q"   
     
     def is_valid_piece_movement(self, row_difference, column_difference):
         if (row_difference == 0 and column_difference != 0):
@@ -88,7 +118,19 @@ class Queen(Piece):
     
 
 class King(Piece):
-    pass
+
+    def __init__(self, color):
+        super().__init__(color)
+        if self.color == "black":
+            self.letter ="k"
+        if self.color == "white":
+            self.letter ="K"   
+
+    def is_valid_piece_movement(self, row_difference, column_difference):
+        if abs((row_difference <=1 ) and abs(column_difference <=1)):
+            return True
+
+    
 
 
 
