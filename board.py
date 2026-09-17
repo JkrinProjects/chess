@@ -1,23 +1,35 @@
-from pieces import Piece, Pawn
+from pieces import Piece, Pawn, Rook, Knight, Bishop, Queen, King
 
 class Board:
 
-    #replace "." with None in the future
     def __init__(self):
         self.grid =  [
-        ["r","h","b","q","k","b","h","r"],
+        [Rook("black"),Knight("black"),Bishop("black"),Queen("black"),King("black"),Bishop("black"),Knight("black"),Rook("black")],
         [Pawn("black"),Pawn("black"),Pawn("black"),Pawn("black"),Pawn("black"),Pawn("black"),Pawn("black"),Pawn("black")],
-        [".",".",".",".",".",".",".","."],
-        [".",".",".",".",".",".",".","."],
-        [".",".",".",".",".",".",".","."],
-        [".",".",".",".",".",".",".","."],    
-        ["P","P","P","P","P","P","P","P"],
-        ["R","H","B","Q","K","B","H","R"]
+
+        [None,None,None,None,None,None,None,None],
+        [None,None,None,None,None,None,None,None],
+        [None,None,None,None,None,None,None,None],
+        [None,None,None,None,None,None,None,None], 
+
+        [Pawn("white"),Pawn("white"),Pawn("white"),Pawn("white"),Pawn("white"),Pawn("white"),Pawn("white"),Pawn("white")],
+        [Rook("white"),Knight("white"),Bishop("white"),Queen("white"),King("white"),Bishop("white"),Knight("white"),Rook("white")]
         ]
 
     def print_board(self):
         print(" ")
         print(" ".join(["a","b","c","d","e","f","g","h"]))
         for row in self.grid:
-            print(" ".join(str(piece) for piece in row))
+            new_row = []
+            for piece in row:
+                if piece is None:
+                    new_row.append(".")
+                else:
+                    new_row.append(str(piece))
+            print(" ".join(new_row))
+
+        for _ in range(16):
+            print("-", end="")
+        print()
+        print(" ".join(["a","b","c","d","e","f","g","h"]))
         print(" ")
