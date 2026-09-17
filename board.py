@@ -19,6 +19,9 @@ class Board:
     def print_board(self):
         print(" ")
         print(" ".join(["a","b","c","d","e","f","g","h"]))
+        for _ in range(16):
+            print("-", end="")
+        print(" ")
         for row in self.grid:
             new_row = []
             for piece in row:
