@@ -3,15 +3,6 @@ BOARD_LENGTH = 8
 from pieces import Piece, Pawn
 
 
-def move(board):
-    prev_square = board.grid[1][0]
-    new_square = board.grid[2][0]
-    temp = prev_square
-
-    board.grid[1][0] = new_square
-    board.grid[2][0] = temp
-    return board
-
 def column_letter_to_number(letter):
     base = ord("a")
     return(ord(letter)-base)
