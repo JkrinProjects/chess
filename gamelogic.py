@@ -7,10 +7,23 @@ def column_letter_to_number(letter):
     base = ord("a")
     return(ord(letter)-base)
 
+def get_chess_square(user_input):
+    while True:
+        input_square_name = input(user_input)
+        
+        if input_square_name.lower() == "quit":
+            return None, None
+        
+        try:
+            return convert_chess_square_to_grid(input_square_name)
+        except ValueError as error:
+            print(f"{error}: try again")
+        
+
 #function to validate input and convert chess notation to board.grid location (square A6 -> position (6,0))
 def convert_chess_square_to_grid(square):
     if len(square) != 2:
-        raise ValueError("That is not a valid square")
+        raise ValueError(f"{square} is not a valid square")
 
     board_square = list(square)
     input_column = board_square[0].lower()
@@ -116,6 +129,17 @@ def move(board, starting_row, starting_col, ending_row, ending_col):
     board.grid[ending_row][ending_col] = moving_piece
     board.grid[starting_row][starting_col] = None
 
+def attempt_requested_move(board, starting_row, starting_col, ending_row, ending_col):
+
+    if not is_valid_move(board, starting_row, starting_col, ending_row, ending_col):
+        return False
+
+    move(board, starting_row, starting_col, ending_row, ending_col)
+
+    return True
+
+
+'''
 #final function: converts input to chess notation, validates, and completes the move
 def attempt_requested_move(board, starting_square_name, ending_square_name):
 
@@ -129,7 +153,7 @@ def attempt_requested_move(board, starting_square_name, ending_square_name):
     move(board, starting_row, starting_col, ending_row, ending_col)
 
     return True
-
+'''
 
 
 '''
