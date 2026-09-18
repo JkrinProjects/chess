@@ -27,7 +27,112 @@ def convert_chess_square_to_grid(square):
 
     return grid_row, grid_column
 
+#check that the requested move is allowed by the selected piece's movement rules 
+def movement_matches_piece_movement(board, starting_row, starting_col, ending_row, ending_col):
+    moving_piece: Piece = board.grid[starting_row][starting_col] #the piece in this position
+    #destination_of_moving_piece: Piece = board.grid[ending_row][ending_col] #should be empty or a capturable piece
 
+    row_difference = ending_row - starting_row
+    column_difference = ending_col - starting_col
+
+    return moving_piece.is_valid_piece_movement(row_difference, column_difference)
+
+
+
+#check that the end destination of the moving piece is not blocked.
+def path_is_clear(board, starting_row, starting_col, ending_row, ending_col):
+
+    if ending_row > starting_row:
+        row_step = 1
+    elif ending_row < starting_row:
+        row_step = -1
+    else:
+        row_step = 0
+
+    if ending_col > starting_col:
+        column_step = 1
+    elif ending_col < starting_col:
+        column_step = -1
+    else:
+        column_step = 0
+
+    current_row = starting_row + row_step
+    current_column = starting_col + column_step
+
+    while(current_row, current_column) != (ending_row, ending_col):
+        if(board.grid[current_row][current_column] is not None):
+            return False
+
+        current_row += row_step
+        current_column += column_step
+
+    return True
+
+#starting square has a piece
+def starting_square_has_a_piece(board, starting_row, starting_col):
+    return board.grid[starting_row][starting_col] is not None
+
+#check that the square being moved to is empty or capturable
+def destination_is_valid(board, starting_row, starting_col, ending_row, ending_col):
+
+    moving_piece: Piece = board.grid[starting_row][starting_col]
+    destination_of_moving_piece: Piece = board.grid[ending_row][ending_col]
+
+    #this check needs to be first, None does not have a color attribute
+    if destination_of_moving_piece is None:
+        return True
+
+    #same color piece blocks movement
+    if destination_of_moving_piece.color == moving_piece.color:
+        return False
+
+    #if destination square is not empty or same color, capture piece by returning True
+    return True
+    
+    
+#function to aggregate all check/validation funcitons of piece movement
+def is_valid_move(board, starting_row, starting_col, ending_row, ending_col):
+
+    if not starting_square_has_a_piece(board, starting_row, starting_col):
+        return False
+
+    #requested movement matches the movement rules of the piece at board[start_row][start_col]
+    if not movement_matches_piece_movement(board, starting_row, starting_col, ending_row, ending_col):
+        return False
+
+    if not path_is_clear(board, starting_row, starting_col, ending_row, ending_col):
+        return False
+
+    if not destination_is_valid(board, starting_row, starting_col, ending_row, ending_col):
+        return False
+
+    return True
+
+#move piece
+def move(board, starting_row, starting_col, ending_row, ending_col):
+    moving_piece: Piece = board.grid[starting_row][starting_col]
+    #destination_of_moving_piece: Piece = board.grid[ending_row][ending_col] not needed, value of starting square has to be None after movement
+
+    board.grid[ending_row][ending_col] = moving_piece
+    board.grid[starting_row][starting_col] = None
+
+#final function: converts input to chess notation, validates, and completes the move
+def attempt_requested_move(board, starting_square_name, ending_square_name):
+
+    #map the square name to the table position 
+    starting_row, starting_col = convert_chess_square_to_grid(starting_square_name)
+    ending_row, ending_col = convert_chess_square_to_grid(ending_square_name)
+
+    if not is_valid_move(board, starting_row, starting_col, ending_row, ending_col):
+        return False
+
+    move(board, starting_row, starting_col, ending_row, ending_col)
+
+    return True
+
+
+
+'''
 
 def move(board, starting_square_name, ending_square_name):
 
@@ -42,6 +147,7 @@ def move(board, starting_square_name, ending_square_name):
     moving_piece: Piece = board.grid[starting_row][starting_col] #the piece in this positin
     destination_of_moving_piece: Piece = board.grid[ending_row][ending_col] #should be empty or a capturable piece, can use its emptiness to verify valid move
 
+    
     #check if the movement is valid
     if moving_piece.is_valid_piece_movement(row_difference, column_difference):
         #Move the piece
@@ -51,6 +157,9 @@ def move(board, starting_square_name, ending_square_name):
         return True
     return False
 
+    #check path to destination is not blocked
+
+
     ###Older code
     #starting_row = BOARD_LENGTH - int(starting_board_square[1])
     #starting_col = column_letter_to_number(starting_board_square[0])
@@ -58,3 +167,4 @@ def move(board, starting_square_name, ending_square_name):
 
     #ending_row = BOARD_LENGTH - int(ending_square_name[1]) 
     #ending_col = column_letter_to_number(ending_board_square[0])
+'''
