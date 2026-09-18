@@ -1,6 +1,6 @@
 BOARD_LENGTH = 8
 
-from pieces import Piece, Pawn
+from pieces import Piece
 
 
 def column_letter_to_number(letter):
@@ -85,41 +85,43 @@ def path_is_clear(board, starting_row, starting_col, ending_row, ending_col):
 def starting_square_has_a_piece(board, starting_row, starting_col):
     return board.grid[starting_row][starting_col] is not None
 
-#check that the square being moved to is empty or capturable
+#check that the square being moved to is empty or capturable,(the check to ensure the square is on the board is done when validating user input in get_chess_square() via convert_chess_square_to_grid())
 def destination_is_valid(board, starting_row, starting_col, ending_row, ending_col):
 
     moving_piece: Piece = board.grid[starting_row][starting_col]
     destination_of_moving_piece: Piece = board.grid[ending_row][ending_col]
 
-    #this check needs to be first, None does not have a color attribute
-    if destination_of_moving_piece is None:
+    #check for empty square as None has no attribute for color. If the destination square is not empty ensure it is the opposite color of the moving piece, allowing a capture
+    if ((destination_of_moving_piece is None) or (destination_of_moving_piece.color != moving_piece.color)):
         return True
 
-    #same color piece blocks movement
-    if destination_of_moving_piece.color == moving_piece.color:
-        return False
-
-    #if destination square is not empty or same color, capture piece by returning True
-    return True
+    return False
     
     
 #function to aggregate all check/validation funcitons of piece movement
+#returns a boolean representing a valid move and adds an error message if not
 def is_valid_move(board, starting_row, starting_col, ending_row, ending_col):
 
     if not starting_square_has_a_piece(board, starting_row, starting_col):
-        return False
+        error = "There is no piece on starting square"
+        return False, error
 
     #requested movement matches the movement rules of the piece at board[start_row][start_col]
     if not movement_matches_piece_movement(board, starting_row, starting_col, ending_row, ending_col):
-        return False
+        error = "that piece doesnt move that way"
+        return False, error
 
+    #path is not blocked
     if not path_is_clear(board, starting_row, starting_col, ending_row, ending_col):
-        return False
+        error = "the path to destination is blocked"
+        return False, error
 
+    #destination is either empty of an opposite color piece
     if not destination_is_valid(board, starting_row, starting_col, ending_row, ending_col):
-        return False
+        error = "that square is occupied by one of your pieces"
+        return False, error
 
-    return True
+    return True, None
 
 #move piece
 def move(board, starting_row, starting_col, ending_row, ending_col):
@@ -129,14 +131,17 @@ def move(board, starting_row, starting_col, ending_row, ending_col):
     board.grid[ending_row][ending_col] = moving_piece
     board.grid[starting_row][starting_col] = None
 
+#performs the piece movement and returns two variables. A boolean for success/failure and either a string with an error message, or None
 def attempt_requested_move(board, starting_row, starting_col, ending_row, ending_col):
 
-    if not is_valid_move(board, starting_row, starting_col, ending_row, ending_col):
-        return False
-
+    #validated is the boolean which stores the boolean returned from is_valid_move()
+    validated, error = is_valid_move(board, starting_row, starting_col, ending_row, ending_col)
+    if not validated:
+        return False, error
+    
     move(board, starting_row, starting_col, ending_row, ending_col)
 
-    return True
+    return True, None
 
 
 '''
