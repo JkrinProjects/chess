@@ -1,5 +1,5 @@
 from board import Board
-from gamelogic import move
+from gamelogic import attempt_requested_move, get_chess_square
 
 
 
@@ -8,18 +8,23 @@ def main():
     game_board = Board()
     game_board.print_board()
     
-    game_on = True
-    while game_on == True:
-        start_position = input("Starting Position: ")
-        if start_position == "quit":
-            game_on == False
+    while True:
+        #request starting square coordinates from the user and pass to get_chess_square to
+        #validate the input and return a row and column 
+        
+        starting_row, starting_column = get_chess_square("Starting Position: (or quit): ")
+        if starting_row is None:
             break
-                
-        end_position = input("Ending Position: ")
-        if move(game_board, start_position, end_position):
+
+        ending_row, ending_column = get_chess_square("Ending Position: (or quit): ")
+        if ending_row is None:
+            break
+
+        try:
+            attempt_requested_move(game_board, starting_row, starting_column, ending_row, ending_column)
             game_board.print_board()
-        else:
-            print("Invalid Move")
+        except ValueError as error:
+            print(error)
         
 
 
