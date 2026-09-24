@@ -1,5 +1,7 @@
 from pieces import Piece, Pawn, Rook, Knight, Bishop, Queen, King
 
+BOARD_LENGTH = 8
+
 class Board:
 
     def __init__(self):
@@ -15,6 +17,13 @@ class Board:
         [Pawn("white"),Pawn("white"),Pawn("white"),Pawn("white"),Pawn("white"),Pawn("white"),Pawn("white"),Pawn("white")],
         [Rook("white"),Knight("white"),Bishop("white"),Queen("white"),King("white"),Bishop("white"),Knight("white"),Rook("white")]
         ]
+
+    def get_piece_location_and_color(self, piece, color):
+        for row in range(BOARD_LENGTH):
+            for column in range(BOARD_LENGTH):
+                pass
+
+
 
     def print_board(self):
         print(" ")
