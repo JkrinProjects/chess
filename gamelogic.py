@@ -1,6 +1,6 @@
 BOARD_LENGTH = 8
 
-from pieces import Piece
+from pieces import Piece, Pawn, Knight, King
 
 
 def column_letter_to_number(letter):
@@ -91,7 +91,16 @@ def destination_is_valid(board, starting_row, starting_col, ending_row, ending_c
     moving_piece: Piece = board.grid[starting_row][starting_col]
     destination_of_moving_piece: Piece = board.grid[ending_row][ending_col]
 
+    #Special rules for Pawn, Knight, and King(castling)
+    
+    #pawn check for only straight movement, diagonal captures, 2 spaces traveled on first move, or promotion
+    if isinstance(moving_piece, Pawn):
+        if abs(ending_col - starting_col) == 1: #column should only change on a capture
+            return((destination_of_moving_piece is None) or (destination_of_moving_piece.color != moving_piece.color))
+
+
     #check for empty square as None has no attribute for color. If the destination square is not empty ensure it is the opposite color of the moving piece, allowing a capture
+    #need a special case/check for pawns(cant capture straight)
     if ((destination_of_moving_piece is None) or (destination_of_moving_piece.color != moving_piece.color)):
         return True
 
@@ -130,6 +139,8 @@ def move(board, starting_row, starting_col, ending_row, ending_col):
 
     board.grid[ending_row][ending_col] = moving_piece
     board.grid[starting_row][starting_col] = None
+
+    moving_piece.hasmoved = True
 
 #performs the piece movement and returns two variables. A boolean for success/failure and either a string with an error message, or None
 def attempt_requested_move(board, starting_row, starting_col, ending_row, ending_col):
