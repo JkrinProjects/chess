@@ -1,6 +1,6 @@
 BOARD_LENGTH = 8
 
-from pieces import Piece, Pawn, Knight, King
+from pieces import Piece, Pawn, Knight, King, Queen, Bishop, Rook
 
 
 def column_letter_to_number(letter):
@@ -99,7 +99,7 @@ def destination_is_valid(board, starting_row, starting_col, ending_row, ending_c
     #pawn only has diagonal captures, can travel two spaces traveled on first move, and can turn into any piece on promotion(reaching the oppponents back rank)
     if isinstance(moving_piece, Pawn):
         if abs(ending_col - starting_col) == 1: #column difference can only be 1 on a capture
-            return((destination_of_moving_piece is None) or (destination_of_moving_piece.color != moving_piece.color))
+            return((destination_of_moving_piece is not None) and (destination_of_moving_piece.color != moving_piece.color))
 
 
     #check for empty square. If the destination square is not empty ensure it is the opposite color of the moving piece, allowing a capture
@@ -135,6 +135,30 @@ def is_valid_move(board, starting_row, starting_col, ending_row, ending_col):
 
     return True, None
 
+
+#pawn promotion
+#function to check a pawn made it to the opponent's back rank
+def pawn_can_promote(board, piece, row, column):
+
+    if not isinstance(piece, Pawn):
+        return False
+
+    if ((piece.color == "white") and (row == 0)):
+        return True
+    if ((piece.color == "black") and (row == 7)):
+        return True
+
+    return False
+
+#function to promote the pawn. replaces the Pawn instance with a newly instantiated Piece.(defaults to Queen for now)
+def promote_pawn(board, piece, row, column):
+    if (piece.color == "white"):
+        board.grid[row][column] = Queen("white")
+
+    if (piece.color == "black"):
+        board.grid[row][column] = Queen("black")
+    
+
 #move piece
 def move(board, starting_row, starting_col, ending_row, ending_col):
     moving_piece: Piece = board.grid[starting_row][starting_col]
@@ -144,6 +168,9 @@ def move(board, starting_row, starting_col, ending_row, ending_col):
     board.grid[starting_row][starting_col] = None
 
     moving_piece.hasmoved = True
+
+    if(pawn_can_promote(board, moving_piece, ending_row, ending_col)):
+        promote_pawn(board, moving_piece, ending_row, ending_col)
 
 #performs the piece movement and returns two variables. A boolean for success/failure and either a string with an error message, or None
 def attempt_requested_move(board, starting_row, starting_col, ending_row, ending_col):
@@ -156,58 +183,3 @@ def attempt_requested_move(board, starting_row, starting_col, ending_row, ending
     move(board, starting_row, starting_col, ending_row, ending_col)
 
     return True, None
-
-
-'''
-#final function: converts input to chess notation, validates, and completes the move
-def attempt_requested_move(board, starting_square_name, ending_square_name):
-
-    #map the square name to the table position 
-    starting_row, starting_col = convert_chess_square_to_grid(starting_square_name)
-    ending_row, ending_col = convert_chess_square_to_grid(ending_square_name)
-
-    if not is_valid_move(board, starting_row, starting_col, ending_row, ending_col):
-        return False
-
-    move(board, starting_row, starting_col, ending_row, ending_col)
-
-    return True
-'''
-
-
-'''
-
-def move(board, starting_square_name, ending_square_name):
-
-    #map the square name to the table position
-    starting_row, starting_col = convert_chess_square_to_grid(starting_square_name)
-    ending_row, ending_col = convert_chess_square_to_grid(ending_square_name)
-
-    row_difference = ending_row - starting_row
-    column_difference = ending_col - starting_col
-    
-    #get the piece at the grid location
-    moving_piece: Piece = board.grid[starting_row][starting_col] #the piece in this positin
-    destination_of_moving_piece: Piece = board.grid[ending_row][ending_col] #should be empty or a capturable piece, can use its emptiness to verify valid move
-
-    
-    #check if the movement is valid
-    if moving_piece.is_valid_piece_movement(row_difference, column_difference):
-        #Move the piece
-        board.grid[starting_row][starting_col] = destination_of_moving_piece
-        board.grid[ending_row][ending_col] = moving_piece
-
-        return True
-    return False
-
-    #check path to destination is not blocked
-
-
-    ###Older code
-    #starting_row = BOARD_LENGTH - int(starting_board_square[1])
-    #starting_col = column_letter_to_number(starting_board_square[0])
-    
-
-    #ending_row = BOARD_LENGTH - int(ending_square_name[1]) 
-    #ending_col = column_letter_to_number(ending_board_square[0])
-'''
