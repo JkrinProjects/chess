@@ -5,6 +5,7 @@ class Piece(ABC):
     def __init__(self, color):
         self.color = color
         self.letter = None
+        self.hasmoved = False
 
     #print function
     def __str__(self):
@@ -33,9 +34,13 @@ class Pawn(Piece):
             #move down the board
             if(column_difference == 0 and row_difference == 1):
                 return True
-            #capture down
-            if ((column_difference == 1 or column_difference == -1) and row_difference == 1):
+            #capture diagonlly down
+            if (abs(column_difference) and row_difference == 1):
                 return True
+            #travel two spaces on first move
+            if(column_difference == 0 and row_difference == 2 and (self.hasmoved is False)):
+                return True
+            
             
         #white pawn movement
         if self.color == "white":   
@@ -43,7 +48,9 @@ class Pawn(Piece):
             if(column_difference == 0 and row_difference == -1):
                 return True
             #capture up
-            if ((column_difference == 1 or column_difference == -1) and row_difference == -1):
+            if (abs(column_difference) and row_difference == -1):
+                return True
+            if(column_difference == 0 and row_difference == 2 and (self.hasmoved is False)):
                 return True
         return False
 
@@ -70,9 +77,9 @@ class Knight(Piece):
     def __init__(self, color):
         super().__init__(color)
         if self.color == "black":
-            self.letter ="h"
+            self.letter ="n"
         if self.color == "white":
-            self.letter ="H"   
+            self.letter ="N"   
 
     def is_valid_piece_movement(self, row_difference, column_difference):
             if (abs(row_difference) == 2 and abs(column_difference) == 1):
