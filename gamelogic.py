@@ -52,8 +52,12 @@ def movement_matches_piece_movement(board, starting_row, starting_col, ending_ro
 
 
 
-#check that the end destination of the moving piece is not blocked.
+#check that the end destination of the moving piece is not blocked. Knights can jump so are not concerned with clear path
 def path_is_clear(board, starting_row, starting_col, ending_row, ending_col):
+
+    moving_piece = board.grid[starting_row][starting_row]
+    if isinstance(moving_piece, Knight):
+        return True
 
     if ending_row > starting_row:
         row_step = 1
@@ -91,15 +95,14 @@ def destination_is_valid(board, starting_row, starting_col, ending_row, ending_c
     moving_piece: Piece = board.grid[starting_row][starting_col]
     destination_of_moving_piece: Piece = board.grid[ending_row][ending_col]
 
-    #Special rules for Pawn, Knight, and King(castling)
-    
-    #pawn check for only straight movement, diagonal captures, 2 spaces traveled on first move, or promotion
+    #Special rules for Pawn capture & first move    
+    #pawn only has diagonal captures, can travel two spaces traveled on first move, and can turn into any piece on promotion(reaching the oppponents back rank)
     if isinstance(moving_piece, Pawn):
-        if abs(ending_col - starting_col) == 1: #column should only change on a capture
+        if abs(ending_col - starting_col) == 1: #column difference can only be 1 on a capture
             return((destination_of_moving_piece is None) or (destination_of_moving_piece.color != moving_piece.color))
 
 
-    #check for empty square as None has no attribute for color. If the destination square is not empty ensure it is the opposite color of the moving piece, allowing a capture
+    #check for empty square. If the destination square is not empty ensure it is the opposite color of the moving piece, allowing a capture
     #need a special case/check for pawns(cant capture straight)
     if ((destination_of_moving_piece is None) or (destination_of_moving_piece.color != moving_piece.color)):
         return True
