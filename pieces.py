@@ -142,36 +142,3 @@ class King(Piece):
             and (row_difference !=0 or column_difference !=0)):
             return True
         return False
-
-    
-
-
-
-'''       
-    def get_row_and_column_difference(self, starting_row, ending_square):
-        #get table coordinates from chess notation
-        starting_row, starting_col = convert_chess_square_to_grid(starting_square)
-        ending_row, ending_col = convert_chess_square_to_grid(ending_square)
-
-        #find difference
-        row_difference = ending_row - starting_row
-        column_difference = ending_col - starting_col
-
-        return row_difference, column_difference        
-
-        if self.color == "black":
-            if column_difference == 0:
-                if row_difference == 1:
-                    return True
-                else:
-                    return False
-
-
-
-
-#capture
-        if column_difference == 1 or column_difference == -1:
-            if row_difference == 1:
-                return True
-            else:
-                return False'''
