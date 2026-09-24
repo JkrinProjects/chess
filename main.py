@@ -1,8 +1,6 @@
 from board import Board
 from gamelogic import attempt_requested_move, get_chess_square
 
-
-
 def main():
 
     game_board = Board()
@@ -28,9 +26,5 @@ def main():
         else:
             print(f"Invalid move: {error}")
 
-        
-
-
-    
 if __name__ == "__main__":
     main()
