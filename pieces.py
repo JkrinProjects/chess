@@ -50,7 +50,7 @@ class Pawn(Piece):
             #capture up
             if (abs(column_difference) and row_difference == -1):
                 return True
-            if(column_difference == 0 and row_difference == 2 and (self.hasmoved is False)):
+            if(column_difference == 0 and row_difference == -2 and (self.hasmoved is False)):
                 return True
         return False
 
