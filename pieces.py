@@ -35,7 +35,7 @@ class Pawn(Piece):
             if(column_difference == 0 and row_difference == 1):
                 return True
             #capture diagonlly down
-            if (abs(column_difference) and row_difference == 1):
+            if (abs(column_difference) == 1 and row_difference == 1):
                 return True
             #travel two spaces on first move
             if(column_difference == 0 and row_difference == 2 and (self.hasmoved is False)):
@@ -48,7 +48,7 @@ class Pawn(Piece):
             if(column_difference == 0 and row_difference == -1):
                 return True
             #capture up
-            if (abs(column_difference) and row_difference == -1):
+            if (abs(column_difference) == 1 and row_difference == -1):
                 return True
             if(column_difference == 0 and row_difference == -2 and (self.hasmoved is False)):
                 return True
