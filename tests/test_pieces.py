@@ -4,6 +4,7 @@
 import unittest
 
 from pieces import Pawn, Rook, Bishop, Knight, Queen, King
+from board import Board
 
 #knight movement
 class TestKnightMovement(unittest.TestCase):
@@ -26,9 +27,96 @@ class TestKnightMovement(unittest.TestCase):
         for movement_type, row_difference, column_difference in non_valid_moves:
             with self.subTest(movement_type = movement_type):
                 self.assertFalse(self.knight.is_valid_piece_movement(row_difference, column_difference))
+#example subtest below
 
 
-#example subtest
+class TestPawnMovement(unittest.TestCase):
+    capture_direction = [("right", 1 ),("left", -1)]
+    
+    #white moves
+    def test_white_pawn_moves_forward(self):
+        pawn = Pawn("white")
+        self.assertTrue(pawn.is_valid_piece_movement(-1,0))
+
+    def test_white_pawn_doesnt_move_backward(self):
+        pawn = Pawn("white")
+        self.assertFalse(pawn.is_valid_piece_movement(1,0))
+
+    def test_white_can_travel_two_spaces_from_starting_square(self):
+        pawn = Pawn("white")
+        pawn.hasmoved = False
+        self.assertTrue(pawn.is_valid_piece_movement(-2,0))        
+
+    def test_white_cant_travel_two_after_moving(self):
+        pawn = Pawn("white")
+        pawn.hasmoved = True
+        self.assertFalse(pawn.is_valid_piece_movement(-2,0))
+
+    def test_white_cant_travel_two_after_moving(self):
+        pawn = Pawn("white")
+        pawn.hasmoved = True
+        self.assertFalse(pawn.is_valid_piece_movement(-2,0))
+
+    #test to ensure that a pawn is allowed to move diagnally 1 column per its rules
+    def test_white_can_move_diagonal_where_applicable(self):
+        pawn_has_moved_before = Pawn("white")
+        pawn_has_moved_before.hasmoved = True
+
+        pawn_has_not_moved_before = Pawn("white")
+        pawn_has_not_moved_before.hasmoved = False
+
+        pawn_test_captures = [pawn_has_moved_before, pawn_has_not_moved_before]
+        for pawn in pawn_test_captures:
+            for direction, column_difference in self.capture_direction:
+                with self.subTest(has_moved_before=pawn.hasmoved, column_difference=direction):
+                    self.assertTrue(pawn.is_valid_piece_movement(-1,column_difference))
+
+
+    #black  moves
+    def test_black_pawn_moves_forward(self):
+        pawn = Pawn("black")
+        self.assertTrue(pawn.is_valid_piece_movement(1,0))
+
+    def test_black_pawn_doesnt_move_backward(self):
+        pawn = Pawn("black")
+        self.assertFalse(pawn.is_valid_piece_movement(-1,0))
+    
+    def test_black_can_travel_two_spaces_from_starting_square(self):
+        pawn = Pawn("black")
+        pawn.hasmoved = False
+        self.assertTrue(pawn.is_valid_piece_movement(2,0))   
+    
+    def test_black_cant_capture_two_square_before_has_moved(self):
+        pawn = Pawn("black")
+        pawn.hasmoved = False
+        for direction, column_difference in self.capture_direction:
+            with self.subTest(column_difference = column_difference):
+                self.assertFalse(pawn.is_valid_piece_movement(2,1))
+
+    def test_black_cant_travel_two_after_moving(self):
+        pawn = Pawn("black")
+        pawn.hasmoved = True
+        self.assertFalse(pawn.is_valid_piece_movement(2,0))
+
+    #test to ensure that a pawn is allowed to move diagnally 1 column per its rules
+    def test_black_can_move_diagonal_where_applicable(self):
+        pawn_has_moved_before = Pawn("black")
+        pawn_has_moved_before.hasmoved = True
+
+        pawn_has_not_moved_before = Pawn("black")
+        pawn_has_not_moved_before.hasmoved = False
+
+        pawn_test_captures = [pawn_has_moved_before, pawn_has_not_moved_before]
+        for pawn in pawn_test_captures:
+            for direction, column_difference in self.capture_direction:
+                with self.subTest(has_moved_before=pawn.hasmoved, column_difference=direction):
+                    self.assertTrue(pawn.is_valid_piece_movement(1,column_difference))
+
+
+
+
+    
+##example for reference
 '''class NumbersTest(unittest.TestCase):
 
     def test_even(self):
@@ -39,23 +127,8 @@ class TestKnightMovement(unittest.TestCase):
             with self.subTest(i=i):
                 self.assertEqual(i % 2, 0)'''
 
-'''    #single instances of movement tests
-    def test_knight_correctly_moves_two_row_one_column(self):
-        self.assertTrue(self.knight.is_valid_piece_movement(2,1))
 
-    def test_knight_correctly_moves_two_columns_one_row(self):
-        self.assertTrue(self.knight.is_valid_piece_movement(1,2))
 
-    def test_knight_doesnt_move_straight_line(self):
-        self.assertFalse(self.knight.is_valid_piece_movement(2,0))
 
-    def test_knight_doesnt_move_diagonal(self):
-        self.assertFalse(self.knight.is_valid_piece_movement(1,1))
 
-    def test_knight_doesnt_move_more_than_two_rows(self):
-        self.assertFalse(self.knight.is_valid_piece_movement(3,1))
-
-    def test_knight_doesnt_move_more_than_two_columns(self):
-        self.assertFalse(self.knight.is_valid_piece_movement(1,3))'''
-    
 
