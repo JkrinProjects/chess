@@ -55,7 +55,7 @@ def movement_matches_piece_movement(board, starting_row, starting_col, ending_ro
 #check that the end destination of the moving piece is not blocked. Knights can jump so are not concerned with clear path
 def path_is_clear(board, starting_row, starting_col, ending_row, ending_col):
 
-    moving_piece = board.grid[starting_row][starting_row]
+    moving_piece = board.grid[starting_row][starting_col]
     if isinstance(moving_piece, Knight):
         return True
 
