@@ -5,7 +5,6 @@ BOARD_LENGTH = 8
 class Board:
 
     def __init__(self):
-        self.current_turn_color = "w"
         self.grid =  [
         [Rook("black"),Knight("black"),Bishop("black"),Queen("black"),King("black"),Bishop("black"),Knight("black"),Rook("black")],
         [Pawn("black"),Pawn("black"),Pawn("black"),Pawn("black"),Pawn("black"),Pawn("black"),Pawn("black"),Pawn("black")],
@@ -24,11 +23,7 @@ class Board:
             for column in range(BOARD_LENGTH):
                 pass
 
-    def change_turn(self):
-        if self.current_turn_color == "white":
-            self.current_turn_color = "black"
-        else:
-            self.current_turn_color = "white"
+
 
 
 
