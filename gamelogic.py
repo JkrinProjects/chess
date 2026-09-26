@@ -99,15 +99,19 @@ def destination_is_valid(board, starting_row, starting_col, ending_row, ending_c
     #pawn only has diagonal captures, can travel two spaces traveled on first move, and can turn into any piece on promotion(reaching the oppponents back rank)
     if isinstance(moving_piece, Pawn):
         if abs(ending_col - starting_col) == 1: #column difference can only be 1 on a capture
-            return((destination_of_moving_piece is not None) and (destination_of_moving_piece.color != moving_piece.color))
+            if (destination_of_moving_piece is None):
+                return False, "pawn can only move diagonally to capture"
+            if (destination_of_moving_piece.color == moving_piece.color):
+                return False, "can't capture your own piece!"
+            return True, None
 
 
     #check for empty square. If the destination square is not empty ensure it is the opposite color of the moving piece, allowing a capture
     #need a special case/check for pawns(cant capture straight)
     if ((destination_of_moving_piece is None) or (destination_of_moving_piece.color != moving_piece.color)):
-        return True
-
-    return False
+        return True, None
+    error = "that square is occupied by one of your pieces"
+    return False, error
     
     
 #function to aggregate all check/validation funcitons of piece movement
@@ -129,8 +133,8 @@ def is_valid_move(board, starting_row, starting_col, ending_row, ending_col):
         return False, error
 
     #destination is either empty of an opposite color piece
-    if not destination_is_valid(board, starting_row, starting_col, ending_row, ending_col):
-        error = "that square is occupied by one of your pieces"
+    valid_destination, error = destination_is_valid(board, starting_row, starting_col, ending_row, ending_col)
+    if not valid_destination:
         return False, error
 
     return True, None
@@ -138,7 +142,7 @@ def is_valid_move(board, starting_row, starting_col, ending_row, ending_col):
 
 #pawn promotion
 #function to check a pawn made it to the opponent's back rank
-def pawn_can_promote(board, piece, row, column):
+def pawn_can_promote(board, piece, row):
 
     if not isinstance(piece, Pawn):
         return False
@@ -169,17 +173,6 @@ def move(board, starting_row, starting_col, ending_row, ending_col):
 
     moving_piece.hasmoved = True
 
-    if(pawn_can_promote(board, moving_piece, ending_row, ending_col)):
+    if(pawn_can_promote(board, moving_piece, ending_row)):
         promote_pawn(board, moving_piece, ending_row, ending_col)
 
-#performs the piece movement and returns two variables. A boolean for success/failure and either a string with an error message, or None
-def attempt_requested_move(board, starting_row, starting_col, ending_row, ending_col):
-
-    #validated is the boolean which stores the boolean returned from is_valid_move()
-    validated, error = is_valid_move(board, starting_row, starting_col, ending_row, ending_col)
-    if not validated:
-        return False, error
-    
-    move(board, starting_row, starting_col, ending_row, ending_col)
-
-    return True, None
