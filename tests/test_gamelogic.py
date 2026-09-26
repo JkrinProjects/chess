@@ -84,7 +84,7 @@ class TestPawnPromotion(unittest.TestCase):
         
         for pawn, row in test_cases_for_promotion:
                 with self.subTest(color=pawn.color, promotion_row=row):
-                    self.assertTrue(pawn_can_promote(board, pawn, row,0)) 
+                    self.assertTrue(pawn_can_promote(board, pawn, row)) 
 
     def test_pawn_doesnt_promote_on_wrong_row(self):
         white_pawn = Pawn("white")
@@ -95,7 +95,7 @@ class TestPawnPromotion(unittest.TestCase):
         for pawn, row in test_cases_for_promotion:
             for row in range(1,7):
                 with self.subTest(color=pawn.color, row=row):
-                    self.assertFalse(pawn_can_promote(board, pawn, row, 0))
+                    self.assertFalse(pawn_can_promote(board, pawn, row))
 
     def test_black_pawn_promotion_success(self):
         board = Board()
