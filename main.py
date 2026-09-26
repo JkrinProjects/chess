@@ -1,5 +1,6 @@
 from board import Board
-from gamelogic import attempt_requested_move, get_chess_square
+from gamelogic import get_chess_square
+from game import Game
 
 def main():
 
@@ -19,7 +20,7 @@ def main():
             break
 
 
-        piece_was_moved_successfully, error = attempt_requested_move(game_board, starting_row, starting_column, ending_row, ending_column)
+        piece_was_moved_successfully, error = Game.attempt_requested_move(game_board, starting_row, starting_column, ending_row, ending_column)
 
         if piece_was_moved_successfully:
             game_board.print_board()
