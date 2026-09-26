@@ -1,6 +1,6 @@
 from board import Board
 from gamelogic import get_chess_square
-from game import Game
+from gamemanager import Game
 
 def main():
 
